@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InspectDron S.A.S. — Inspección con Drones · Cundinamarca & Boyacá</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #f2f4f3;
+      --bg2:       #e8ece9;
+      --bg3:       #ffffff;
+      --border:    #d4dbd5;
+      --shadow:    rgba(0,0,0,0.08);
+      --green:     #2e7d32;
+      --green-mid: #388e3c;
+      --green-lt:  #e8f5e9;
+      --green-acc: #43a047;
+      --blue:      #1565c0;
+      --blue-lt:   #e3f0fb;
+      --gray-dark: #2e3530;
+      --gray-mid:  #6b7570;
+      --gray-lt:   #9eaaa1;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--gray-dark); overflow-x: hidden; line-height: 1.7; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 70px;
+      background: rgba(242,244,243,0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    .nav-logo img { height: 50px; width: auto; }
+    nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    nav a { color: var(--gray-mid); text-decoration: none; font-size: .88rem; font-weight: 500; transition: color .2s; }
+    nav a:hover { color: var(--green); }
+    .nav-cta { background: var(--green); color: #fff !important; padding: .5rem 1.3rem; border-radius: 50px; font-weight: 600 !important; transition: background .2s !important; }
+    .nav-cta:hover { background: var(--green-mid) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gray-dark); border-radius: 2px; }
+    #mobile-menu { display: none; position: fixed; inset: 0; z-index: 99; background: var(--bg3); padding: 5rem 5vw 2rem; flex-direction: column; gap: 1.5rem; }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a { font-size: 1.2rem; color: var(--gray-dark); text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    #mobile-menu a:last-child { color: var(--green); border: none; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0;
+      background-image: url('fotos/fiandina_chia_paneles.jpg');
+      background-size: cover; background-position: center 40%;
+      filter: brightness(.45);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(20,50,22,.75) 0%, rgba(15,40,80,.5) 100%);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      padding: 8rem 5vw 5rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center;
+      width: 100%; max-width: 1300px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+      color: #fff; padding: .35rem 1rem; border-radius: 50px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      margin-bottom: 1.6rem; backdrop-filter: blur(8px);
+    }
+    .hero-badge::before { content: '●'; font-size: .5rem; color: #69f0ae; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.08; letter-spacing: -.025em; color: #fff; margin-bottom: 1.2rem; }
+    h1 em { font-style: normal; color: #69f0ae; }
+    .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,.82); max-width: 520px; margin-bottom: 2.4rem; }
+    .hero-sub strong { color: #fff; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-primary { background: var(--green); color: #fff; padding: .88rem 2.1rem; border-radius: 50px; font-weight: 700; font-size: .95rem; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: background .2s, transform .15s; }
+    .btn-primary:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .btn-white { border: 2px solid rgba(255,255,255,.5); color: #fff; padding: .88rem 2.1rem; border-radius: 50px; font-weight: 500; font-size: .95rem; text-decoration: none; transition: border-color .2s, background .2s; }
+    .btn-white:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+    .hero-pills { display: flex; gap: .7rem; flex-wrap: wrap; }
+    .pill { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); border-radius: 50px; padding: .38rem 1rem; font-size: .8rem; color: rgba(255,255,255,.9); font-weight: 500; display: flex; align-items: center; gap: .45rem; backdrop-filter: blur(6px); }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #69f0ae; flex-shrink: 0; }
+    .hero-logo-box { background: rgba(0,0,0,.45); border-radius: 24px; padding: 2rem; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.12); flex-shrink: 0; width: clamp(160px, 18vw, 240px); display: flex; align-items: center; justify-content: center; }
+    .hero-logo-box img { width: 100%; display: block; }
+
+    /* ── COMMONS ── */
+    section { padding: 6rem 5vw; }
+    .inner { max-width: 1240px; margin: 0 auto; }
+    .stag { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--green-acc); margin-bottom: .7rem; }
+    h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; color: var(--blue); margin-bottom: .9rem; }
+    .sh { margin-bottom: 3.5rem; }
+    .sh p { color: var(--gray-mid); font-size: 1rem; max-width: 580px; }
+    .btn-ghost { border: 2px solid var(--border); color: var(--gray-mid); padding: .85rem 2rem; border-radius: 50px; font-weight: 500; font-size: .95rem; text-decoration: none; transition: border-color .2s, color .2s; display: inline-block; }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ── SERVICIOS ── */
+    #servicios { background: var(--bg3); }
+    .sgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.8rem; }
+    .scard { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: transform .2s, box-shadow .2s, border-color .2s; }
+    .scard:hover { transform: translateY(-5px); box-shadow: 0 18px 45px var(--shadow); border-color: #a5d6a7; }
+    .scard-photo { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .scard-body { padding: 1.8rem; }
+    .scard-bar { height: 3px; background: linear-gradient(90deg, var(--green), #42a5f5); margin-bottom: 1.4rem; margin: -1px -1px 1.4rem; }
+    .scard-tag { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--green-acc); font-weight: 700; margin-bottom: .5rem; }
+    .scard h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--gray-dark); margin-bottom: .8rem; }
+    .scard p { color: var(--gray-mid); font-size: .88rem; line-height: 1.7; margin-bottom: 1.2rem; }
+    .scard ul { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+    .scard li { font-size: .84rem; color: var(--gray-mid); display: flex; align-items: flex-start; gap: .55rem; }
+    .scard li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .ftag { background: var(--green); color: #fff; font-size: .62rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .25rem .8rem; border-radius: 50px; display: inline-block; margin-bottom: .6rem; }
+
+    /* ── GALERÍA ── */
+    #galeria { background: var(--bg2); }
+    .gallery-intro { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem; }
+    .gmosaic {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 260px 260px;
+      gap: 12px;
+      border-radius: 20px; overflow: hidden;
+    }
+    .gitem { overflow: hidden; cursor: pointer; }
+    .gitem img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease, filter .3s; display: block; }
+    .gitem:hover img { transform: scale(1.06); filter: brightness(1.08); }
+    /* mosaic layout */
+    .gitem:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+    .gitem:nth-child(2) { grid-column: 3; grid-row: 1; }
+    .gitem:nth-child(3) { grid-column: 4; grid-row: 1; }
+    .gitem:nth-child(4) { grid-column: 1; grid-row: 2; }
+    .gitem:nth-child(5) { grid-column: 2; grid-row: 2; }
+    .gitem:nth-child(6) { grid-column: 3 / 5; grid-row: 2; }
+    .gcaption { font-size: .72rem; color: var(--gray-lt); text-align: center; padding-top: .5rem; font-style: italic; }
+
+    /* lightbox */
+    #lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.93); align-items: center; justify-content: center; cursor: zoom-out; }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    #lb-close { position: absolute; top: 1.5rem; right: 2rem; color: #fff; font-size: 2rem; cursor: pointer; background: none; border: none; line-height: 1; opacity: .7; transition: opacity .2s; }
+    #lb-close:hover { opacity: 1; }
+    #lb-caption { position: absolute; bottom: 1.8rem; color: rgba(255,255,255,.6); font-size: .82rem; font-style: italic; }
+
+    /* ── TECNOLOGÍA ── */
+    #tecnologia { background: var(--bg3); }
+    .tgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .tcards { display: grid; gap: 1rem; }
+    .tcard { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem 1.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: border-color .2s; }
+    .tcard:hover { border-color: #a5d6a7; }
+    .tcard-ico { font-size: 1.35rem; flex-shrink: 0; margin-top: .1rem; }
+    .tcard h4 { font-family: 'Syne', sans-serif; font-size: .92rem; font-weight: 700; color: var(--gray-dark); margin-bottom: .3rem; }
+    .tcard p { font-size: .84rem; color: var(--gray-mid); line-height: 1.6; }
+    .tvisual { border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px var(--shadow); position: relative; }
+    .tvisual img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .tvisual-badge { position: absolute; bottom: 1.2rem; left: 1.2rem; background: rgba(0,0,0,.65); color: #fff; backdrop-filter: blur(8px); padding: .5rem 1rem; border-radius: 50px; font-size: .78rem; font-weight: 600; border: 1px solid rgba(255,255,255,.15); }
+
+    /* ── PROCESO ── */
+    #proceso { background: var(--bg2); }
+    .psteps { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 2rem; position: relative; }
+    .psteps::before { content: ''; position: absolute; top: 30px; left: 60px; right: 60px; height: 2px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 8px, transparent 8px, transparent 16px); }
+    .pstep { text-align: center; }
+    .pnum { width: 60px; height: 60px; border-radius: 50%; background: var(--green); color: #fff; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.3rem; position: relative; z-index: 1; box-shadow: 0 4px 16px rgba(46,125,50,.3); }
+    .pstep h4 { font-family: 'Syne', sans-serif; font-size: .92rem; font-weight: 700; color: var(--gray-dark); margin-bottom: .4rem; }
+    .pstep p { font-size: .82rem; color: var(--gray-mid); line-height: 1.6; }
+
+    /* ── COBERTURA ── */
+    #cobertura { background: var(--bg3); }
+    .cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+    .ccard { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.6rem; transition: border-color .2s, transform .2s; }
+    .ccard:hover { border-color: #a5d6a7; transform: translateY(-3px); }
+    .ccard-emo { font-size: 1.6rem; margin-bottom: .6rem; }
+    .ccard h4 { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; color: var(--gray-dark); margin-bottom: .4rem; }
+    .ccard p { font-size: .82rem; color: var(--gray-mid); line-height: 1.6; }
+
+    /* ── CONTACTO ── */
+    #contacto { background: var(--bg2); }
+    .clayout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+    .cinfo h2 { color: var(--blue); }
+    .cinfo > p { color: var(--gray-mid); margin-top: .8rem; font-size: .95rem; line-height: 1.7; }
+    .citems { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .citem { display: flex; align-items: center; gap: 1rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.3rem; }
+    .citem-ico { font-size: 1.2rem; }
+    .citem-lbl { font-size: .72rem; color: var(--gray-lt); text-transform: uppercase; letter-spacing: .06em; }
+    .citem-val { font-size: .9rem; color: var(--gray-dark); font-weight: 600; }
+    .citem-val a { color: inherit; text-decoration: none; }
+    .citem-val a:hover { color: var(--green); }
+    .cform { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 2.4rem; box-shadow: 0 8px 30px var(--shadow); }
+    .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .ff { display: flex; flex-direction: column; gap: .4rem; }
+    .ff.full { grid-column: 1 / -1; }
+    .ff label { font-size: .78rem; color: var(--gray-mid); font-weight: 600; }
+    .ff input, .ff select, .ff textarea { background: var(--bg); border: 1px solid var(--border); color: var(--gray-dark); padding: .75rem 1rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: .9rem; outline: none; transition: border-color .2s, box-shadow .2s; width: 100%; resize: vertical; }
+    .ff input:focus, .ff select:focus, .ff textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(46,125,50,.1); }
+    .ff select option { background: #fff; }
+    .bsub { width: 100%; margin-top: 1.3rem; padding: 1rem; border-radius: 12px; border: none; cursor: pointer; background: var(--green); color: #fff; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; box-shadow: 0 4px 16px rgba(46,125,50,.25); transition: background .2s, transform .15s; }
+    .bsub:hover { background: var(--green-mid); transform: translateY(-1px); }
+    .fnote { margin-top: .9rem; font-size: .76rem; color: var(--gray-lt); text-align: center; }
+
+    /* ── FOOTER ── */
+    footer { background: #111; color: #888; padding: 2.5rem 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .flogo img { height: 52px; width: auto; }
+    footer p { font-size: .8rem; }
+    footer a { color: #7cb97e; text-decoration: none; }
+    footer a:hover { color: #a5d6a7; }
+
+    /* ── ANIMATIONS ── */
+    .fu { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .fu.vis { opacity: 1; transform: none; }
+    .fu:nth-child(2) { transition-delay: .08s; }
+    .fu:nth-child(3) { transition-delay: .16s; }
+    .fu:nth-child(4) { transition-delay: .24s; }
+    .fu:nth-child(5) { transition-delay: .32s; }
+    .fu:nth-child(6) { transition-delay: .40s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .gmosaic { grid-template-columns: repeat(3, 1fr); grid-template-rows: 220px 220px; }
+      .gitem:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+      .gitem:nth-child(2) { grid-column: 3; grid-row: 1; }
+      .gitem:nth-child(3) { grid-column: 1; grid-row: 2; }
+      .gitem:nth-child(4) { grid-column: 2; grid-row: 2; }
+      .gitem:nth-child(5) { grid-column: 3; grid-row: 2; }
+      .gitem:nth-child(6) { display: none; }
+    }
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-logo-box { display: none; }
+      .tgrid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .tvisual { order: -1; }
+      .clayout { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 680px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+      .psteps::before { display: none; }
+      .fgrid { grid-template-columns: 1fr; }
+      .gmosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 200px); }
+      .gitem:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+      .gitem:nth-child(2) { grid-column: 1; grid-row: 2; }
+      .gitem:nth-child(3) { grid-column: 2; grid-row: 2; }
+      .gitem:nth-child(4) { grid-column: 1; grid-row: 3; }
+      .gitem:nth-child(5) { grid-column: 2; grid-row: 3; }
+      .gitem:nth-child(6) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="logo_fondo_blanco.png" alt="InspectDron S.A.S." /></div>
+  <ul>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Proyectos</a></li>
+    <li><a href="#tecnologia">Tecnología</a></li>
+    <li><a href="#proceso">Cómo trabajamos</a></li>
+    <li><a href="#contacto" class="nav-cta">Solicitar inspección</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="mobile-menu">
+  <a href="#servicios"  onclick="toggleMenu()">Servicios</a>
+  <a href="#galeria"    onclick="toggleMenu()">Proyectos</a>
+  <a href="#tecnologia" onclick="toggleMenu()">Tecnología</a>
+  <a href="#proceso"    onclick="toggleMenu()">Cómo trabajamos</a>
+  <a href="#contacto"   onclick="toggleMenu()">Solicitar inspección →</a>
+</div>
+
+<!-- HERO con foto aérea Fiandina como fondo -->
+<section id="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Cundinamarca · Boyacá · Tolima . Meta </div>
+      <h1>Inspección<br><em>inteligente</em><br>con drones</h1>
+      <p class="hero-sub">Detectamos fallas en tus <strong>sistemas de energía solar</strong> y redes eléctricas con tecnología termográfica de precisión industrial. Informe técnico entregado en <strong>48 horas</strong>.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-primary">Solicitar inspección ↗</a>
+        <a href="#galeria"  class="btn-white">Ver proyectos reales</a>
+      </div>
+      <div class="hero-pills">
+        <div class="pill"><span class="pill-dot"></span>Termografía solar</div>
+        <div class="pill"><span class="pill-dot"></span>Redes eléctricas</div>
+        <div class="pill"><span class="pill-dot"></span>Topografía RTK</div>log
+        <div class="pill"><span class="pill-dot"></span>Informe en 48 h</div>
+      </div>
+    </div>
+    <div class="hero-logo-box">
+      <img src="logo_fondo_blanco.png" alt="InspectDron S.A.S." />
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="inner">
+    <div class="sh fu">
+      <div class="stag">Portafolio de servicios</div>
+      <h2>¿Qué hacemos por ti?</h2>
+      <p>Tres líneas de servicio especializadas, ejecutadas con tecnología de inspección aérea de nivel industrial y entregadas con informe técnico georreferenciado.</p>
+    </div>
+    <div class="sgrid">
+
+      <!-- Servicio 1 -->
+      <div class="scard fu">
+        <img class="scard-photo" src="fotos/semex_zipaquira_paneles.jpg" alt="Inspección termográfica paneles solares — Semex Zipaquirá" />
+        <div class="scard-body">
+          <div class="scard-bar"></div>
+          <span class="ftag">Servicio principal</span>
+          <div class="scard-tag">Energía Solar</div>
+          <h3>Inspección Termográfica de Paneles Solares</h3>
+          <p>Identificamos fallas invisibles al ojo humano: celdas dañadas, puntos calientes, conexiones deficientes y módulos degradados. Todo en un solo sobrevuelo con cámara térmica de precisión industrial.</p>
+          <ul>
+            <li>Detección de hot spots y celdas en falla</li>
+            <li>Imagen térmica y visual georreferenciada</li>
+            <li>Informe clasificado por severidad de falla</li>
+            <li>Válido para reclamación de garantía al fabricante</li>
+            <li>Entrega digital en 48 horas hábiles</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Servicio 2 -->
+      <div class="scard fu">
+        <img class="scard-photo" src="fotos/acueducto_cota_transformador.jpg" alt="Inspección de redes eléctricas — Acueducto Cota" />
+        <div class="scard-body">
+          <div class="scard-bar"></div>
+          <div class="scard-tag">Infraestructura Eléctrica</div>
+          <h3>Inspección de Redes y Subestaciones</h3>
+          <p>Detección de puntos calientes en empalmes, aisladores y subestaciones. Operamos a distancia de seguridad respecto a líneas energizadas, sin interrumpir el servicio eléctrico.</p>
+          <ul>
+            <li>Identificación de empalmes sobrecalentados</li>
+            <li>Inspección de aisladores y transformadores</li>
+            <li>Operación a distancia de seguridad normativa</li>
+            <li>Informe georreferenciado por punto de anomalía</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Servicio 3 -->
+      <div class="scard fu">
+        <img class="scard-photo" src="fotos/catedral_sal_zipaquira_paneles.jpg" alt="Levantamiento topográfico — Catedral de Sal Zipaquirá" />
+        <div class="scard-body">
+          <div class="scard-bar"></div>
+          <div class="scard-tag">Topografía · Próximamente</div>
+          <h3>Levantamientos Topográficos RTK</h3>
+          <p>Ortomosaicos de alta resolución, modelos digitales de terreno y nubes de puntos 3D con precisión centimétrica. Ideal para obras civiles, vías y diseño de parques solares.</p>
+          <ul>
+            <li>Ortomosaico georreferenciado de alta resolución</li>
+            <li>Modelo Digital de Terreno (MDT / MDS)</li>
+            <li>Nube de puntos 3D para análisis volumétrico</li>
+            <li>Compatible con AutoCAD, Civil 3D y ArcGIS</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA DE PROYECTOS -->
+<section id="galeria">
+  <div class="inner">
+    <div class="gallery-intro fu">
+      <div>
+        <div class="stag">Proyectos reales</div>
+        <h2>Trabajos en campo</h2>
+        <p class="sh p" style="color:var(--gray-mid); max-width:500px;">Estas son instalaciones reales inspeccionadas y documentadas en la región. Cada imagen fue capturada con dron en operación de campo.</p>
+      </div>
+      <a href="#contacto" class="btn-ghost">Solicitar inspección →</a>
+    </div>
+
+    <div class="gmosaic">
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Vista aérea — Acueducto Municipio de Cota, Pozo El Abra">
+        <img src="fotos/acueducto_cota_aéreo.jpg" alt="Acueducto Cota — vista aérea" loading="lazy" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Sistema fotovoltaico — Fiandina, Chía">
+        <img src="fotos/fiandina_chia_paneles.jpg" alt="Fiandina Chía — paneles solares" loading="lazy" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Parque solar — Catedral de Sal, Zipaquirá">
+        <img src="fotos/catedral_sal_zipaquira_paneles.jpg" alt="Catedral de Sal Zipaquirá — paneles" loading="lazy" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Instalación solar agropecuaria — Semex Zipaquirá, Sector Barandillas">
+        <img src="fotos/semex_zipaquira_paneles.jpg" alt="Semex Zipaquirá — paneles solares" loading="lazy" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Sistema de inversores y baterías — Semex Zipaquirá, Sector Barandillas">
+        <img src="fotos/semex_baterias_inversores.jpg" alt="Semex — inversores y baterías" loading="lazy" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Infraestructura eléctrica — Acueducto Municipio de Cota">
+        <img src="fotos/acueducto_cota_transformador.jpg" alt="Acueducto Cota — transformador" loading="lazy" />
+      </div>
+    </div>
+
+    <!-- Fila extra de proyectos -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; border-radius:16px; overflow:hidden;">
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Instalación solar industrial en cubierta — Lácteos San Jerónimo, Cubarral (Meta)">
+        <img src="fotos/lacteos_san_jeronimo_paneles.jpg" alt="Lácteos San Jerónimo — paneles en cubierta" loading="lazy" style="width:100%; height:220px; object-fit:cover; display:block; transition: transform .5s, filter .3s;" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Subestación eléctrica — Lácteos San Jerónimo, Cubarral (Meta)">
+        <img src="fotos/lacteos_san_jeronimo_subestacion.jpg" alt="Lácteos San Jerónimo — subestación" loading="lazy" style="width:100%; height:220px; object-fit:cover; display:block; transition: transform .5s, filter .3s;" />
+      </div>
+      <div class="gitem fu" onclick="openLb(this)" data-caption="Panel de inversores y tablero eléctrico — Moto Mart, Chía">
+        <img src="fotos/motomart_chia_electrico.jpg" alt="Moto Mart Chía — sistema eléctrico" loading="lazy" style="width:100%; height:220px; object-fit:cover; display:block; transition: transform .5s, filter .3s;" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLb()">
+  <button id="lb-close" onclick="closeLb()">✕</button>
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()" />
+  <p id="lb-caption"></p>
+</div>
+
+<!-- TECNOLOGÍA -->
+<section id="tecnologia">
+  <div class="inner">
+    <div class="tgrid">
+      <div>
+        <div class="stag">Plataforma tecnológica</div>
+        <h2>Tecnología de inspección de nivel industrial</h2>
+        <p style="color:var(--gray-mid); margin-bottom:2.2rem;">Operamos con plataformas Enterprise de última generación, diseñadas específicamente para inspección técnica profesional. Cuatro sensores trabajando de forma simultánea en cada vuelo.</p>
+        <div class="tcards">
+          <div class="tcard fu">
+            <div class="tcard-ico">🌡️</div>
+            <div>
+              <h4>Cámara termográfica profesional</h4>
+              <p>Sensor térmico de alta resolución que detecta diferencias mínimas de temperatura. Ideal para identificar fallas eléctricas antes de que se conviertan en averías costosas.</p>
+            </div>
+          </div>
+          <div class="tcard fu">
+            <div class="tcard-ico">📷</div>
+            <div>
+              <h4>Multi-sensor simultáneo</h4>
+              <p>Imagen térmica, visual de contexto, zoom de detalle y telémetro láser en un solo sobrevuelo. Menos tiempo en campo, más información por misión.</p>
+            </div>
+          </div>
+          <div class="tcard fu">
+            <div class="tcard-ico">📍</div>
+            <div>
+              <h4>Georreferenciación de precisión</h4>
+              <p>Cada anomalía queda ubicada con coordenadas exactas. El informe incluye la posición de cada falla para facilitar la intervención de los técnicos en campo.</p>
+            </div>
+          </div>
+          <div class="tcard fu">
+            <div class="tcard-ico">📄</div>
+            <div>
+              <h4>Software de análisis especializado</h4>
+              <p>Procesamiento profesional con herramienta especializada en termografía. Informe técnico generado conforme a los estándares del sector energético.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tvisual fu">
+        <img src="fotos/acueducto_cota_aéreo.jpg" alt="Inspección aérea en campo — Acueducto Cota" />
+        <div class="tvisual-badge">📍 Acueducto Cota — operación en campo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="inner">
+    <div class="sh" style="text-align:center; max-width:600px; margin:0 auto 3.5rem;">
+      <div class="stag">Cómo trabajamos</div>
+      <h2>De la solicitud al informe en 72 horas</h2>
+      <p style="margin:0 auto; color:var(--gray-mid);">Un proceso claro, eficiente y completamente documentado para cada cliente.</p>
+    </div>
+    <div class="psteps">
+      <div class="pstep fu"><div class="pnum">1</div><h4>Contacto</h4><p>Nos cuentas sobre tu instalación. Recopilamos los datos básicos del sistema a inspeccionar.</p></div>
+      <div class="pstep fu"><div class="pnum">2</div><h4>Planificación</h4><p>Diseñamos la misión de vuelo y acordamos la fecha según condiciones climáticas y operativas.</p></div>
+      <div class="pstep fu"><div class="pnum">3</div><h4>Vuelo</h4><p>Ejecutamos el sobrevuelo con captura térmica, visual y georreferenciación simultánea de toda la instalación.</p></div>
+      <div class="pstep fu"><div class="pnum">4</div><h4>Análisis</h4><p>Procesamos los datos e identificamos cada anomalía clasificada por tipo y severidad.</p></div>
+      <div class="pstep fu"><div class="pnum">5</div><h4>Informe</h4><p>Entregamos el reporte técnico digital con mapa de anomalías y recomendaciones de acción.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COBERTURA -->
+<section id="cobertura">
+  <div class="inner">
+    <div class="sh fu">
+      <div class="stag">Zona de operación</div>
+      <h2>Cobertura regional</h2>
+      <p>Con sede en Chía, Cundinamarca, cubrimos toda la región central de Colombia con respuesta rápida y sin desplazamientos costosos para el cliente.</p>
+    </div>
+    <div class="cgrid">
+      <div class="ccard fu"><div class="ccard-emo">📍</div><h4>Cundinamarca</h4><p>Cobertura completa desde nuestra sede en Chía. Toda la Sabana de Bogotá y sus municipios.</p></div>
+      <div class="ccard fu"><div class="ccard-emo">🏔️</div><h4>Boyacá</h4><p>Operación en todo el departamento, incluyendo zonas de alta montaña y el Valle del Sugamuxi.</p></div>
+      <div class="ccard fu"><div class="ccard-emo">🌿</div><h4>Tolima</h4><p>Cobertura en instalaciones agroindustriales y proyectos solares del departamento del Tolima.</p></div>
+      <div class="ccard fu"><div class="ccard-emo">🌿</div><h4>Meta</h4><p>Cobertura en instalaciones productoras de lacteos y ganaderas del departamento del Meta.</p></div>
+      <div class="ccard fu"><div class="ccard-emo">⚡</div><h4>Redes Regionales</h4><p>Inspección de líneas de distribución y subestaciones en la región central del país.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="inner">
+    <div class="clayout">
+      <div class="cinfo fu">
+        <div class="stag">Contacto</div>
+        <h2>¿Tienes paneles solares? Hablemos.</h2>
+        <p>Cuéntanos sobre tu instalación y te enviamos una cotización en 24 horas. Sin compromiso. Atendemos desde sistemas residenciales hasta grandes parques solares industriales.</p>
+        <div class="citems">
+          <div class="citem"><span class="citem-ico">💬</span><div><div class="citem-lbl">WhatsApp</div><div class="citem-val"><a href="https://wa.me/573166097997" target="_blank">+57 316 609 7997</a></div></div></div>
+          <div class="citem"><span class="citem-ico">✉️</span><div><div class="citem-lbl">Correo electrónico</div><div class="citem-val"><a href="mailto:contacto@inspectdron.com">contacto@inspectdron.com</a></div></div></div>
+          <div class="citem"><span class="citem-ico">📍</span><div><div class="citem-lbl">Sede</div><div class="citem-val">Chía, Cundinamarca — Colombia</div></div></div>
+          <div class="citem"><span class="citem-ico">🕐</span><div><div class="citem-lbl">Tiempo de respuesta</div><div class="citem-val">Cotización en 24 h · Informe en 48 h</div></div></div>
+        </div>
+      </div>
+      <div class="cform fu">
+        <div class="fgrid">
+          <div class="ff"><label>Nombre completo</label><input type="text" id="f-nombre" placeholder="Tu nombre" /></div>
+          <div class="ff"><label>WhatsApp / Teléfono</label><input type="tel" id="f-tel" placeholder="+57 300 000 0000" /></div>
+          <div class="ff"><label>Correo electrónico</label><input type="email" id="f-email" placeholder="tu@correo.com" /></div>
+          <div class="ff"><label>Tipo de servicio</label>
+            <select id="f-servicio">
+              <option value="">Selecciona...</option>
+              <option>Inspección termográfica solar</option>
+              <option>Inspección de red eléctrica</option>
+              <option>Levantamiento topográfico</option>
+              <option>No estoy seguro / necesito asesoría</option>
+            </select>
+          </div>
+          <div class="ff"><label>Municipio</label><input type="text" id="f-municipio" placeholder="Ej. Zipaquirá, Cundinamarca" /></div>
+          <div class="ff"><label>Tamaño de la instalación</label>
+            <select id="f-tamano">
+              <option value="">Selecciona...</option>
+              <option>Pequeño (hasta 30 kWp)</option>
+              <option>Mediano (30–150 kWp)</option>
+              <option>Grande (más de 150 kWp)</option>
+              <option>Red eléctrica / subestación</option>
+            </select>
+          </div>
+          <div class="ff full"><label>Cuéntanos sobre tu instalación</label><textarea id="f-msg" rows="4" placeholder="Describe brevemente qué necesitas inspeccionar..."></textarea></div>
+        </div>
+        <button class="bsub" onclick="sendWhatsApp()">Enviar solicitud por WhatsApp →</button>
+        <p class="fnote">Al enviar se abrirá WhatsApp con tu mensaje. Respondemos en menos de 24 horas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo"><img src="logo_fondo_blanco.png" alt="InspectDron S.A.S." /></div>
+  <div>
+    <p style="color:#ccc; font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; margin-bottom:.3rem;">InspectDron S.A.S.</p>
+    <p>Inspección con drones · Energía solar · Redes eléctricas · Topografía</p>
+    <p style="margin-top:.3rem;">Chía, Cundinamarca — Colombia · 2025</p>
+  </div>
+  <div style="text-align:right;">
+    <p><a href="https://wa.me/573166097997" target="_blank">💬 +57 316 609 7997</a></p>
+    <p style="margin-top:.4rem;"><a href="mailto:contacto@inspectdron.com">✉ Correo electrónico</a></p>
+    <p style="margin-top:.6rem; font-size:.72rem; color:#555;">Operación legal certificada UAEAC · RPAS</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll animations
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+  // Mobile menu
+  function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+  document.addEventListener('click', e => {
+    const m = document.getElementById('mobile-menu');
+    if (m.classList.contains('open') && !m.contains(e.target) && !e.target.closest('.hamburger')) m.classList.remove('open');
+  });
+
+  // Nav highlight
+  const secs = document.querySelectorAll('section[id]');
+  const nls  = document.querySelectorAll('nav a[href^="#"]');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 110) cur = s.id; });
+    nls.forEach(a => { if (!a.classList.contains('nav-cta')) a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--green)' : ''; });
+  });
+
+  // Lightbox
+  function openLb(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lb-img').src = img.src;
+    document.getElementById('lb-caption').textContent = el.dataset.caption || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+  // WhatsApp
+  function sendWhatsApp() {
+    const nombre    = document.getElementById('f-nombre').value    || '—';
+    const tel       = document.getElementById('f-tel').value       || '—';
+    const servicio  = document.getElementById('f-servicio').value  || '—';
+    const municipio = document.getElementById('f-municipio').value || '—';
+    const tamano    = document.getElementById('f-tamano').value    || '—';
+    const msg       = document.getElementById('f-msg').value       || '—';
+    const text = encodeURIComponent(
+      `🚁 *Solicitud de inspección — InspectDron S.A.S.*\n\n` +
+      `*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Servicio:* ${servicio}\n` +
+      `*Municipio:* ${municipio}\n*Tamaño:* ${tamano}\n*Detalle:* ${msg}`
+    );
+    window.open(`https://wa.me/573166097997?text=${text}`, '_blank');
+  }
+</script>
+</body>
+</html>
